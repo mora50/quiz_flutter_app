@@ -1,74 +1,93 @@
 import 'package:first_app/core/core.dart';
+import 'package:first_app/shared/models/answer_model.dart';
 import 'package:flutter/material.dart';
 
 class AnwserWidget extends StatelessWidget {
-  final String question;
-  final bool isRight;
+  final AnswerModel answer;
   final bool isSelected;
+  final VoidCallback onTap;
+  final bool disabled;
+
   const AnwserWidget(
       {Key? key,
-      required this.question,
-      this.isRight = false,
-      this.isSelected = false})
+      required this.answer,
+      this.isSelected = false,
+      required this.onTap,
+      this.disabled = false})
       : super(key: key);
 
   Color get _selectedColorRight =>
-      isRight ? AppColors.darkGreen : AppColors.darkRed;
+      answer.isRight ? AppColors.darkGreen : AppColors.darkRed;
 
   Color get _selectedBorderRight =>
-      isRight ? AppColors.lightGreen : AppColors.lightRed;
+      answer.isRight ? AppColors.lightGreen : AppColors.darkRed;
 
   Color get _selectedColorCardRight =>
-      isRight ? AppColors.lightGreen : AppColors.lightRed;
+      answer.isRight ? AppColors.lightGreen : AppColors.lightRed;
 
   TextStyle get _selectedTextStyledRight =>
-      isRight ? AppTextStyles.bodyDarkGreen : AppTextStyles.bodyDarkRed;
+      answer.isRight ? AppTextStyles.bodyDarkGreen : AppTextStyles.bodyDarkRed;
 
   Color get _selectedBorderCardRight =>
-      isRight ? AppColors.green : AppColors.red;
+      answer.isRight ? AppColors.green : AppColors.red;
 
-  IconData get _selectedIconRight => isRight ? Icons.check : Icons.close;
+  IconData get _selectedIconRight => answer.isRight ? Icons.check : Icons.close;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-          color: isRight ? _selectedColorCardRight : AppColors.white,
-          border: Border.fromBorderSide(
-            BorderSide(
-                color: isRight ? _selectedBorderCardRight : AppColors.border),
-          ),
-          borderRadius: BorderRadius.circular(10)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: Text(question,
-                style:
-                    isSelected ? _selectedTextStyledRight : AppTextStyles.body),
-          ),
-          Container(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: IgnorePointer(
+        //parametro para bloquear após selecionar alguma resposta
+        ignoring: disabled,
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: isSelected ? _selectedColorRight : AppColors.darkGreen,
-              borderRadius: BorderRadius.circular(500),
+              color: isSelected ? _selectedColorCardRight : AppColors.white,
               border: Border.fromBorderSide(
                 BorderSide(
-                    color:
-                        isSelected ? _selectedBorderRight : AppColors.border),
+                    color: isSelected
+                        ? _selectedBorderCardRight
+                        : AppColors.border),
               ),
+              borderRadius: BorderRadius.circular(10),
             ),
-            height: 24,
-            width: 24,
-            child: isSelected
-                ? Icon(
-                    _selectedIconRight,
-                    size: 16,
-                    color: AppColors.white,
-                  )
-                : null,
-          )
-        ],
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(answer.title,
+                      style: isSelected
+                          ? _selectedTextStyledRight
+                          : AppTextStyles.body),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: isSelected ? _selectedColorRight : AppColors.white,
+                    borderRadius: BorderRadius.circular(500),
+                    border: Border.fromBorderSide(
+                      BorderSide(
+                          color: isSelected
+                              ? _selectedBorderRight
+                              : AppColors.border),
+                    ),
+                  ),
+                  height: 24,
+                  width: 24,
+                  child: isSelected
+                      ? Icon(
+                          _selectedIconRight,
+                          size: 16,
+                          color: AppColors.white,
+                        )
+                      : null,
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
