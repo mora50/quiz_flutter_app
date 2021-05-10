@@ -2,14 +2,16 @@ import 'package:first_app/challenge/challenge_controller.dart';
 import 'package:first_app/challenge/widgets/next_button/next_button_widget.dart';
 import 'package:first_app/challenge/widgets/question_indicator/question_indicator_widget.dart';
 import 'package:first_app/challenge/widgets/quiz/quiz_widget.dart';
+import 'package:first_app/result/result_page.dart';
 import 'package:first_app/shared/models/question_model.dart';
 import 'package:flutter/material.dart';
 
 class ChallengePage extends StatefulWidget {
-  ChallengePage({Key? key, required this.questions}) : super(key: key);
+  ChallengePage({Key? key, required this.questions, required this.title})
+      : super(key: key);
 
   final List<QuestionModel> questions;
-
+  final String title;
   @override
   _ChallengePageState createState() => _ChallengePageState();
 }
@@ -90,7 +92,17 @@ class _ChallengePageState extends State<ChallengePage> {
                 if (value == widget.questions.length)
                   Expanded(
                     child: NextButtonWidget.green(
-                        label: "Confirmar", onTap: () {}),
+                      label: "Confirmar",
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ResultPage(
+                                    title: widget.title,
+                                  )),
+                        );
+                      },
+                    ),
                   ),
               ],
             ),
