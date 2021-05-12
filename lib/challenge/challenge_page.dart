@@ -41,6 +41,16 @@ class _ChallengePageState extends State<ChallengePage> {
     }
   }
 
+  void onSelected(bool value) {
+    if (value) {
+      controller.rightAnswers++;
+    }
+
+    nextPage();
+  }
+
+  //Todo: create a modal to show if the anwser is right or wrong
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +81,7 @@ class _ChallengePageState extends State<ChallengePage> {
         children: widget.questions
             .map((e) => QuizWidget(
                   question: e,
-                  onChange: nextPage,
+                  onSelected: onSelected,
                 ))
             .toList(),
       ),
@@ -97,9 +107,12 @@ class _ChallengePageState extends State<ChallengePage> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ResultPage(
-                                    title: widget.title,
-                                  )),
+                            builder: (context) => ResultPage(
+                              title: widget.title,
+                              result: controller.rightAnswers,
+                              length: widget.questions.length,
+                            ),
+                          ),
                         );
                       },
                     ),

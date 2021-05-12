@@ -31,6 +31,8 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  //Todo: create a filter by difficult
+
   @override
   Widget build(BuildContext context) {
     if (controller.state == HomeState.success) {

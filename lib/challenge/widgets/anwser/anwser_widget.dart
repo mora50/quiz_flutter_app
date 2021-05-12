@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class AnwserWidget extends StatelessWidget {
   final AnswerModel answer;
   final bool isSelected;
-  final VoidCallback onTap;
+  final ValueChanged<bool> onTap;
   final bool disabled;
 
   const AnwserWidget(
@@ -41,7 +41,9 @@ class AnwserWidget extends StatelessWidget {
         //parametro para bloquear após selecionar alguma resposta
         ignoring: disabled,
         child: GestureDetector(
-          onTap: onTap,
+          onTap: () {
+            onTap(answer.isRight);
+          },
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
